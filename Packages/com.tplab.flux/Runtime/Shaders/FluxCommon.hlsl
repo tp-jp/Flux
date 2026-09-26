@@ -2,14 +2,15 @@
 #define FLUX_COMMON_INCLUDED
 
 float _FluxCount;
-float4 _MainTex_TexelSize;
+float _FluxWidth;
+float _FluxHeight;
 
 uint FluxGetIndex(float2 uv)
 {
-    uint x = (uint)(uv.x * _MainTex_TexelSize.z);
-    uint y = (uint)(uv.y * _MainTex_TexelSize.w);
+    uint x = (uint)(uv.x * _FluxWidth);
+    uint y = (uint)(uv.y * _FluxHeight);
 
-    return y * (uint)_MainTex_TexelSize.z + x;
+    return y * (uint)_FluxWidth + x;
 }
 
 bool FluxIsValid(uint index)
