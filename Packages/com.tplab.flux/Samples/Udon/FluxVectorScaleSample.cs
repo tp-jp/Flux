@@ -4,7 +4,7 @@ using TpLab.Flux.Udon;
 using UdonSharp;
 using UnityEngine;
 
-namespace TpLab.Flux.Samples.VectorScale.Samples.VectorScale
+namespace TpLab.Flux.Samples.Udon
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class FluxVectorScaleSample : UdonSharpBehaviour
@@ -40,14 +40,19 @@ namespace TpLab.Flux.Samples.VectorScale.Samples.VectorScale
 
         public void _OnFluxReadbackComplete()
         {
-            var result = new StringBuilder();
             var data = _readback.Data;
             for (var i = 0; i < _readback.Count; i++)
             {
-                result.AppendLine($"Flux[{i}] = {data[i]}");
+                Debug.Log($"Flux[{i}] = {data[i]}");
             }
-
-            _infoText.text = result.ToString();
+            // var result = new StringBuilder();
+            // var data = _readback.Data;
+            // for (var i = 0; i < _readback.Count; i++)
+            // {
+            //     result.AppendLine($"Flux[{i}] = {data[i]}");
+            // }
+            //
+            // _infoText.text = result.ToString();
         }
     }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "TpLab.Flux.Samples.VectorScale",
-    "rootNamespace": "TpLab.Flux.Samples.VectorScale",
+    "name": "TpLab.Flux.Samples.Udon",
+    "rootNamespace": "TpLab.Flux.Samples.Udon",
     "references": [
         "GUID:3c1bc1267eab5884ebe7f232c09ee0d9",
         "GUID:99835874ee819da44948776e0df4ff1d",
