@@ -46,7 +46,7 @@ Shader "Flux/Samples/ParticleStateRender"
                 v2f o;
 
                 uint index = (uint)v.particle.x;
-                float2 bufferUV = FluxGetUV(index);
+                float2 bufferUV = FluxGetDestinationUV(index);
                 float2 position = tex2Dlod(_StateTex, float4(bufferUV, 0, 0)).rg;
 
                 float3 vertexPosition = v.vertex.xyz;

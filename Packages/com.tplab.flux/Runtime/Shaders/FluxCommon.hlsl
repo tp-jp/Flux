@@ -1,32 +1,52 @@
 #ifndef FLUX_COMMON_INCLUDED
 #define FLUX_COMMON_INCLUDED
 
-float _FluxCount;
-float _FluxWidth;
-float _FluxHeight;
+float _FluxSourceCount;
+float _FluxSourceWidth;
+float _FluxSourceHeight;
 
-uint FluxGetIndex(float2 uv)
+float _FluxDestinationCount;
+float _FluxDestinationWidth;
+float _FluxDestinationHeight;
+
+uint FluxGetDestinationIndex(float2 uv)
 {
-    uint x = (uint)(uv.x * _FluxWidth);
-    uint y = (uint)(uv.y * _FluxHeight);
+    uint x = (uint)(uv.x * _FluxDestinationWidth);
+    uint y = (uint)(uv.y * _FluxDestinationHeight);
 
-    return y * (uint)_FluxWidth + x;
+    return y * (uint)_FluxDestinationWidth + x;
 }
 
-float2 FluxGetUV(uint index)
+float2 FluxGetDestinationUV(uint index)
 {
-    uint width = (uint)_FluxWidth;
+    uint width = (uint)_FluxDestinationWidth;
     uint x = index % width;
     uint y = index / width;
 
     return float2(
-        (x + 0.5) / _FluxWidth,
-        (y + 0.5) / _FluxHeight);
+        (x + 0.5) / _FluxDestinationWidth,
+        (y + 0.5) / _FluxDestinationHeight);
 }
 
-bool FluxIsValid(uint index)
+bool FluxIsDestinationValid(uint index)
 {
-    return index < (uint)_FluxCount;
+    return index < (uint)_FluxDestinationCount;
+}
+
+float2 FluxGetSourceUV(uint index)
+{
+    uint width = (uint)_FluxSourceWidth;
+    uint x = index % width;
+    uint y = index / width;
+
+    return float2(
+        (x + 0.5) / _FluxSourceWidth,
+        (y + 0.5) / _FluxSourceHeight);
+}
+
+bool FluxIsSourceValid(uint index)
+{
+    return index < (uint)_FluxSourceCount;
 }
 
 #endif

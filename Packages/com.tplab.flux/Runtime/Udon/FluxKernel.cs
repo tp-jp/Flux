@@ -32,25 +32,35 @@ namespace TpLab.Flux.Udon
 
         public void Dispatch(FluxBuffer destination)
         {
-            Prepare(destination);
+            PrepareDestination(destination);
 
             VRCGraphics.Blit(null, destination.Texture, material);
         }
 
         public void Dispatch(FluxBuffer source, FluxBuffer destination)
         {
-            Prepare(destination);
+            PrepareDestination(destination);
+            PrepareSource(source);
 
             VRCGraphics.Blit(source.Texture, destination.Texture, material);
         }
 
-        void Prepare(FluxBuffer destination)
+        void PrepareSource(FluxBuffer source)
+        {
+            var texture = source.Texture;
+
+            material.SetFloat("_FluxSourceCount", source.Count);
+            material.SetFloat("_FluxSourceWidth", texture.width);
+            material.SetFloat("_FluxSourceHeight", texture.height);
+        }
+
+        void PrepareDestination(FluxBuffer destination)
         {
             var texture = destination.Texture;
 
-            material.SetFloat("_FluxCount", destination.Count);
-            material.SetFloat("_FluxWidth", texture.width);
-            material.SetFloat("_FluxHeight", texture.height);
+            material.SetFloat("_FluxDestinationCount", destination.Count);
+            material.SetFloat("_FluxDestinationWidth", texture.width);
+            material.SetFloat("_FluxDestinationHeight", texture.height);
         }
     }
 }

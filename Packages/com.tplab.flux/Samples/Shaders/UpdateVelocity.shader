@@ -28,9 +28,9 @@ Shader "Flux/Samples/Particle/UpdateVelocity"
 
             float4 frag(v2f_img i) : SV_Target
             {
-                uint index = FluxGetIndex(i.uv);
+                uint index = FluxGetDestinationIndex(i.uv);
 
-                if (!FluxIsValid(index))
+                if (!FluxIsDestinationValid(index))
                     return 0;
 
                 float4 velocity = tex2D(_MainTex, i.uv);
