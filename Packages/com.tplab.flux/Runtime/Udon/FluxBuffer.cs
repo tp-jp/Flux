@@ -22,7 +22,14 @@ namespace TpLab.Flux.Udon
 
         public int Count => count;
 
-        public int Capacity => _texture.width * _texture.height;
+        public int Capacity
+        {
+            get
+            {
+                EnsureInitialized();
+                return _texture.width * _texture.height;
+            }
+        }
 
         void Start()
         {
