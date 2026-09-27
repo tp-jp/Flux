@@ -518,7 +518,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 144903927}
-  _material: {fileID: 2100000, guid: 70811a59924c8e54fb00063ac9e7fc92, type: 2}
+  material: {fileID: 2100000, guid: 70811a59924c8e54fb00063ac9e7fc92, type: 2}
 --- !u!1 &163943377
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,7 +599,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 163943379}
-  _material: {fileID: 2100000, guid: b06284d102e10a5418f08160c8566123, type: 2}
+  material: {fileID: 2100000, guid: b06284d102e10a5418f08160c8566123, type: 2}
 --- !u!1 &164778075
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,8 +720,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 190778487}
-  _texture: {fileID: 8400000, guid: 9f33de9d55e114b459f050030d523bfc, type: 2}
-  _count: 16
+  count: 16
 --- !u!114 &190778487
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1056,8 +1055,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 386989566}
-  _texture: {fileID: 8400000, guid: 0886869651f6eb5498ddb777dbedd834, type: 2}
-  _count: 16
+  count: 16
 --- !u!114 &386989566
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1131,7 +1129,6 @@ Transform:
   m_Children:
   - {fileID: 1714894845}
   - {fileID: 386989567}
-  - {fileID: 1922483025}
   - {fileID: 1060497924}
   - {fileID: 934955830}
   - {fileID: 27891964}
@@ -1184,11 +1181,11 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 388922184}
-  _bufferA: {fileID: 1714894843}
-  _bufferB: {fileID: 386989565}
-  _initKernel: {fileID: 1060497922}
-  _incrementKernel: {fileID: 934955828}
-  _readback: {fileID: 27891962}
+  bufferA: {fileID: 1714894843}
+  bufferB: {fileID: 386989565}
+  initKernel: {fileID: 1060497922}
+  incrementKernel: {fileID: 934955828}
+  readback: {fileID: 27891962}
 --- !u!1 &547428658
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,7 +1226,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 547428660}
-  _material: {fileID: 2100000, guid: a5462239304ab9a43a1a23630db4c863, type: 2}
+  material: {fileID: 2100000, guid: a5462239304ab9a43a1a23630db4c863, type: 2}
 --- !u!114 &547428660
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1350,8 +1347,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 688773866}
-  _texture: {fileID: 8400000, guid: eeddf89e9803ee74ea25ad5cb1363ffd, type: 2}
-  _count: 1000
+  count: 16
 --- !u!1 &925013406
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,7 +1496,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 934955829}
-  _material: {fileID: 2100000, guid: cc09f35cf2b0c6a46ab7abf637d05bde, type: 2}
+  material: {fileID: 2100000, guid: cc09f35cf2b0c6a46ab7abf637d05bde, type: 2}
 --- !u!114 &934955829
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1581,8 +1577,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 942465628}
-  _texture: {fileID: 8400000, guid: 532ca13fbc91b984486e337c69b54e18, type: 2}
-  _count: 16
+  count: 16
 --- !u!114 &942465628
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1741,7 +1736,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1060497923}
-  _material: {fileID: 2100000, guid: aff80c6ed8e4eca4ba8f93a911b7cb53, type: 2}
+  material: {fileID: 2100000, guid: aff80c6ed8e4eca4ba8f93a911b7cb53, type: 2}
 --- !u!114 &1060497923
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -2187,8 +2182,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1348495935}
-  _texture: {fileID: 8400000, guid: 0d6111f3d041a8746974736b19a26e8f, type: 2}
-  _count: 16
+  count: 16
 --- !u!1 &1450304189
 GameObject:
   m_ObjectHideFlags: 0
@@ -2378,8 +2372,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1714894844}
-  _texture: {fileID: 8400000, guid: 231e571a3605ea242876a35337d6fb46, type: 2}
-  _count: 16
+  count: 16
 --- !u!114 &1714894844
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -2507,13 +2500,13 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1724050669}
-  _bufferA: {fileID: 942465627}
-  _bufferB: {fileID: 1348495936}
-  _output: {fileID: 190778486}
-  _initAKernel: {fileID: 2055930474}
-  _initBKernel: {fileID: 163943380}
-  _addKernel: {fileID: 547428659}
-  _readback: {fileID: 1291843564}
+  bufferA: {fileID: 942465627}
+  bufferB: {fileID: 1348495936}
+  output: {fileID: 190778486}
+  initAKernel: {fileID: 2055930474}
+  initBKernel: {fileID: 163943380}
+  addKernel: {fileID: 547428659}
+  readback: {fileID: 1291843564}
 --- !u!1 &1736423526
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,7 +2587,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1736423528}
-  _material: {fileID: 2100000, guid: 83d18411a732bb2408029c189147248f, type: 2}
+  material: {fileID: 2100000, guid: 83d18411a732bb2408029c189147248f, type: 2}
 --- !u!1 &1787983409
 GameObject:
   m_ObjectHideFlags: 0
@@ -2689,88 +2682,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 55, y: 125, z: 100}
---- !u!1 &1922483022
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1922483025}
-  - component: {fileID: 1922483023}
-  - component: {fileID: 1922483024}
-  m_Layer: 0
-  m_Name: Output
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1922483023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922483022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c83d786de8bce046976bb3ede90adcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  _udonSharpBackingUdonBehaviour: {fileID: 1922483024}
-  _texture: {fileID: 8400000, guid: 6401c24772f0c204d85da974d53826a9, type: 2}
-  _count: 16
---- !u!114 &1922483024
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922483022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactTextPlacement: {fileID: 0}
-  interactText: Use
-  interactTextGO: {fileID: 0}
-  proximity: 2
-  SynchronizePosition: 0
-  AllowCollisionOwnershipTransfer: 0
-  Reliable: 0
-  _syncMethod: 1
-  serializedProgramAsset: {fileID: 0}
-  programSource: {fileID: 11400000, guid: 9a04e106da06d104f8521aeb45795b4e, type: 2}
-  serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF
-  publicVariablesUnityEngineObjects: []
-  publicVariablesSerializationDataFormat: 0
---- !u!4 &1922483025
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922483022}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 388922183}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1944220901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2836,12 +2747,11 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1944220902}
-  _input: {fileID: 688773867}
-  _output: {fileID: 2021861164}
-  _initKernel: {fileID: 144903928}
-  _scaleKernel: {fileID: 1736423529}
-  _readback: {fileID: 164778078}
-  _infoText: {fileID: 1450304191}
+  input: {fileID: 688773867}
+  output: {fileID: 2021861164}
+  initKernel: {fileID: 144903928}
+  scaleKernel: {fileID: 1736423529}
+  readback: {fileID: 164778078}
 --- !u!4 &1944220904
 Transform:
   m_ObjectHideFlags: 0
@@ -2942,8 +2852,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2021861163}
-  _texture: {fileID: 8400000, guid: 96493d1a9d47ac449b7d3a60ef87b61e, type: 2}
-  _count: 1000
+  count: 16
 --- !u!1 &2055930473
 GameObject:
   m_ObjectHideFlags: 0
@@ -2984,7 +2893,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2055930475}
-  _material: {fileID: 2100000, guid: 6b018f969e62a074089c49e5965c841f, type: 2}
+  material: {fileID: 2100000, guid: 6b018f969e62a074089c49e5965c841f, type: 2}
 --- !u!114 &2055930475
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -3304,10 +3213,6 @@ MonoBehaviour:
     - VRC.Udon.UdonBehaviour
   - gameObject: {fileID: 1060497921}
     ID: 29
-    SerializedTypeNames:
-    - VRC.Udon.UdonBehaviour
-  - gameObject: {fileID: 1922483022}
-    ID: 30
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
   - gameObject: {fileID: 27891961}

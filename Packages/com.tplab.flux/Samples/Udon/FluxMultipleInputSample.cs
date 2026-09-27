@@ -8,45 +8,45 @@ namespace TpLab.Flux.Samples.Udon
     public class FluxMultipleInputSample : UdonSharpBehaviour
     {
         [SerializeField]
-        FluxBuffer _bufferA;
+        FluxBuffer bufferA;
 
         [SerializeField]
-        FluxBuffer _bufferB;
+        FluxBuffer bufferB;
 
         [SerializeField]
-        FluxBuffer _output;
+        FluxBuffer output;
 
         [SerializeField]
-        FluxKernel _initAKernel;
+        FluxKernel initAKernel;
 
         [SerializeField]
-        FluxKernel _initBKernel;
+        FluxKernel initBKernel;
 
         [SerializeField]
-        FluxKernel _addKernel;
+        FluxKernel addKernel;
 
         [SerializeField]
-        FluxReadback _readback;
+        FluxReadback readback;
 
         void Start()
         {
-            _initAKernel.SetFloat("_Scale", 1f);
-            _initAKernel.Dispatch(_bufferA);
+            initAKernel.SetFloat("_Scale", 1f);
+            initAKernel.Dispatch(bufferA);
 
-            _initBKernel.SetFloat("_Scale", 10f);
-            _initBKernel.Dispatch(_bufferB);
+            initBKernel.SetFloat("_Scale", 10f);
+            initBKernel.Dispatch(bufferB);
 
-            _addKernel.SetBuffer("_Other", _bufferB);
-            _addKernel.Dispatch(_bufferA, _output);
+            addKernel.SetBuffer("_Other", bufferB);
+            addKernel.Dispatch(bufferA, output);
 
-            _readback.Request(_output, this);
+            readback.Request(output, this);
         }
 
         public void _OnFluxReadbackComplete()
         {
-            var data = _readback.Data;
+            var data = readback.Data;
 
-            for (var i = 0; i < _readback.Count; i++)
+            for (var i = 0; i < readback.Count; i++)
             {
                 Debug.Log($"Flux[{i}] = {data[i]}");
             }

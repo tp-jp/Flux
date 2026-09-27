@@ -1,6 +1,4 @@
-﻿using System.Text;
-using TMPro;
-using TpLab.Flux.Udon;
+﻿using TpLab.Flux.Udon;
 using UdonSharp;
 using UnityEngine;
 
@@ -10,38 +8,35 @@ namespace TpLab.Flux.Samples.Udon
     public class FluxVectorScaleSample : UdonSharpBehaviour
     {
         [SerializeField]
-        FluxBuffer _input;
+        FluxBuffer input;
 
         [SerializeField]
-        FluxBuffer _output;
+        FluxBuffer output;
 
         [SerializeField]
-        FluxKernel _initKernel;
+        FluxKernel initKernel;
 
         [SerializeField]
-        FluxKernel _scaleKernel;
+        FluxKernel scaleKernel;
 
         [SerializeField]
-        FluxReadback _readback;
-
-        [SerializeField]
-        TMP_Text _infoText;
+        FluxReadback readback;
 
         void Start()
         {
-            _initKernel.SetFloat("_Scale", 0.5f);
-            _initKernel.Dispatch(_input);
-            
-            _scaleKernel.SetFloat("_Multiplier", 2f);
-            _scaleKernel.Dispatch(_input, _output);
-            
-            _readback.Request(_output, this);
+            initKernel.SetFloat("_Scale", 0.5f);
+            initKernel.Dispatch(input);
+
+            scaleKernel.SetFloat("_Multiplier", 2f);
+            scaleKernel.Dispatch(input, output);
+
+            readback.Request(output, this);
         }
 
         public void _OnFluxReadbackComplete()
         {
-            var data = _readback.Data;
-            for (var i = 0; i < _readback.Count; i++)
+            var data = readback.Data;
+            for (var i = 0; i < readback.Count; i++)
             {
                 Debug.Log($"Flux[{i}] = {data[i]}");
             }

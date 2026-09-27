@@ -10,19 +10,19 @@ namespace TpLab.Flux.Samples.Udon
         const int IterationCount = 100;
 
         [SerializeField]
-        FluxBuffer _bufferA;
+        FluxBuffer bufferA;
 
         [SerializeField]
-        FluxBuffer _bufferB;
+        FluxBuffer bufferB;
 
         [SerializeField]
-        FluxKernel _initKernel;
+        FluxKernel initKernel;
 
         [SerializeField]
-        FluxKernel _incrementKernel;
+        FluxKernel incrementKernel;
 
         [SerializeField]
-        FluxReadback _readback;
+        FluxReadback readback;
 
         FluxBuffer _current;
         FluxBuffer _next;
@@ -30,20 +30,20 @@ namespace TpLab.Flux.Samples.Udon
 
         void Start()
         {
-            _initKernel.SetFloat("_Scale", 1f);
-            _initKernel.Dispatch(_bufferA);
+            initKernel.SetFloat("_Scale", 1f);
+            initKernel.Dispatch(bufferA);
 
-            _incrementKernel.SetFloat("_Increment", 1f);
+            incrementKernel.SetFloat("_Increment", 1f);
 
-            _current = _bufferA;
-            _next = _bufferB;
+            _current = bufferA;
+            _next = bufferB;
         }
 
         void Update()
         {
             if (_iteration >= IterationCount) return;
 
-            _incrementKernel.Dispatch(_current, _next);
+            incrementKernel.Dispatch(_current, _next);
 
             SwapBuffers();
 
@@ -51,17 +51,17 @@ namespace TpLab.Flux.Samples.Udon
 
             if (_iteration == IterationCount)
             {
-                _readback.Request(_current, this);
+                readback.Request(_current, this);
             }
         }
 
         public void _OnFluxReadbackComplete()
         {
-            var data = _readback.Data;
+            var data = readback.Data;
 
             Debug.Log($"[Flux] Ping-Pong completed: {_iteration} iterations");
 
-            for (var i = 0; i < _readback.Count; i++)
+            for (var i = 0; i < readback.Count; i++)
             {
                 Debug.Log($"Flux[{i}] = {data[i]}");
             }
