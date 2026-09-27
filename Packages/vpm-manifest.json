@@ -5,6 +5,9 @@
     },
     "com.vrchat.worlds": {
       "version": "3.10.5"
+    },
+    "com.tplab.sceneflow": {
+      "version": "2.1.0"
     }
   },
   "locked": {
@@ -20,6 +23,10 @@
     },
     "com.vrchat.base": {
       "version": "3.10.5",
+      "dependencies": {}
+    },
+    "com.tplab.sceneflow": {
+      "version": "2.1.0",
       "dependencies": {}
     }
   }

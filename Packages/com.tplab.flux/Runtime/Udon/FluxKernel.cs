@@ -8,7 +8,15 @@ namespace TpLab.Flux.Udon
     public class FluxKernel : UdonSharpBehaviour
     {
         [SerializeField]
+        Shader shader;
+
+        [HideInInspector]
+        [SerializeField]
         Material material;
+        
+#if !COMPILER_UDONSHARP
+        public Shader Shader => shader;
+#endif
 
         public void SetFloat(string name, float value)
         {

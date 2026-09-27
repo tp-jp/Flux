@@ -6,7 +6,8 @@
   "description": "General-purpose GPU computing framework for VRChat",
   "gitDependencies": {},
   "vpmDependencies": {
-    "com.vrchat.worlds": "^3.10.5"
+    "com.vrchat.worlds": "^3.10.5",
+    "com.tplab.sceneflow": "^2.1.0"
   },
   "author": {
     "name": "tp.jp",

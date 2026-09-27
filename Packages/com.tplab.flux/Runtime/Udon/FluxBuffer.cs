@@ -7,7 +7,8 @@ namespace TpLab.Flux.Udon
     public class FluxBuffer : UdonSharpBehaviour
     {
         [SerializeField]
-        int initialCount;
+        [Min(1)]
+        int initialCount = 1;
 
         RenderTexture _texture;
         int _count;

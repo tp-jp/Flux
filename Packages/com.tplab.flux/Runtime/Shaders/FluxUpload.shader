@@ -16,17 +16,13 @@ Shader "Flux/Upload"
             #include "UnityCG.cginc"
             #include "Packages/com.tplab.flux/Runtime/Shaders/FluxCommon.hlsl"
 
-            float4 _FluxUploadData[1024];
-            float _FluxUploadCount;
+            float4 _FluxUploadData[512];
 
             float4 frag(v2f_img i) : SV_Target
             {
                 uint index = FluxGetDestinationIndex(i.uv);
 
                 if (!FluxIsDestinationValid(index))
-                    return 0;
-
-                if (index >= (uint)_FluxUploadCount)
                     return 0;
 
                 return _FluxUploadData[index];

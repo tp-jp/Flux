@@ -1,4 +1,4 @@
-Shader "Flux/Samples/InitIndex"
+Shader "Flux/Tests/FluxKernel/InitIndex"
 {
     Properties
     {

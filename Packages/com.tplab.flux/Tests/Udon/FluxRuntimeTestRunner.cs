@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UdonSharp;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ namespace TpLab.Flux.Tests.Udon
     public class FluxRuntimeTestRunner : UdonSharpBehaviour
     {
         [SerializeField]
-        UdonSharpBehaviour[] tests;
+        FluxRuntimeTestBase[] tests;
 
         [SerializeField]
         TMP_Text resultText;
@@ -58,7 +57,9 @@ namespace TpLab.Flux.Tests.Udon
                 return;
             }
 
-            tests[_testIndex].SendCustomEvent("_RunTest");
+            var test = tests[_testIndex];
+            test.SetTestRunner(this);
+            test.Run();
         }
 
         void RunNextTest()

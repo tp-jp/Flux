@@ -12,11 +12,12 @@ namespace TpLab.Flux.Udon
         FluxBuffer _buffer;
         UdonSharpBehaviour _receiver;
         Color[] _data;
+        int _count;
         bool _isRequesting;
 
         public Color[] Data => _data;
 
-        public int Count => _buffer != null ? _buffer.Count : 0;
+        public int Count => _count;
 
         public bool IsRequesting => _isRequesting;
 
@@ -26,6 +27,7 @@ namespace TpLab.Flux.Udon
 
             _buffer = buffer;
             _receiver = receiver;
+            _count = buffer.Count;
             _isRequesting = true;
 
             VRCAsyncGPUReadback.Request(buffer.Texture, 0, this);
