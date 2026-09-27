@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Reduction
-  m_Shader: {fileID: 4800000, guid: c8903f1df821902489ce70ebf7daa2b9, type: 3}
+  m_Name: MAT_ReductionSum8
+  m_Shader: {fileID: 4800000, guid: ed782ed5b617ae9498fbf8ef5cbce8c2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

@@ -7,9 +7,10 @@ namespace TpLab.Flux.Udon
     public class FluxBuffer : UdonSharpBehaviour
     {
         [SerializeField]
-        int count;
+        int initialCount;
 
         RenderTexture _texture;
+        int _count;
 
         public RenderTexture Texture
         {
@@ -20,7 +21,14 @@ namespace TpLab.Flux.Udon
             }
         }
 
-        public int Count => count;
+        public int Count
+        {
+            get
+            {
+                EnsureInitialized();
+                return _count;
+            }
+        }
 
         public int Capacity
         {
@@ -29,6 +37,19 @@ namespace TpLab.Flux.Udon
                 EnsureInitialized();
                 return _texture.width * _texture.height;
             }
+        }
+
+        public void SetCount(int count)
+        {
+            EnsureInitialized();
+
+            if (count < 0 || count > Capacity)
+            {
+                Debug.LogError($"[Flux] Count must be between 0 and Capacity ({Capacity}).");
+                return;
+            }
+
+            _count = count;
         }
 
         void Start()
@@ -45,14 +66,16 @@ namespace TpLab.Flux.Udon
         {
             if (_texture != null) return;
 
-            var size = Mathf.CeilToInt(Mathf.Sqrt(count));
+            var size = Mathf.CeilToInt(Mathf.Sqrt(initialCount));
+
             _texture = new RenderTexture(size, size, 0, RenderTextureFormat.ARGBFloat);
             _texture.filterMode = FilterMode.Point;
             _texture.wrapMode = TextureWrapMode.Clamp;
             _texture.useMipMap = false;
             _texture.autoGenerateMips = false;
-
             _texture.Create();
+
+            _count = initialCount;
         }
 
         void Release()

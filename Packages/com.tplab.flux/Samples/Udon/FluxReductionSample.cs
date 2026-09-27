@@ -1,6 +1,7 @@
 ﻿using TpLab.Flux.Udon;
 using UdonSharp;
 using UnityEngine;
+using VRC.Udon.Common.Interfaces;
 
 namespace TpLab.Flux.Samples.Udon
 {
@@ -11,25 +12,19 @@ namespace TpLab.Flux.Samples.Udon
         FluxBuffer inputBuffer;
 
         [SerializeField]
-        FluxBuffer reduceBuffer1;
-
-        [SerializeField]
-        FluxBuffer reduceBuffer2;
-
-        [SerializeField]
-        FluxBuffer reduceBuffer3;
-
-        [SerializeField]
         FluxBuffer resultBuffer;
 
         [SerializeField]
         FluxUpload upload;
 
         [SerializeField]
-        FluxKernel reductionKernel;
+        FluxReduction reduction;
 
         [SerializeField]
         FluxReadback readback;
+
+        [SerializeField]
+        bool useNegativeValues;
 
         void Start()
         {
@@ -37,16 +32,18 @@ namespace TpLab.Flux.Samples.Udon
 
             for (var i = 0; i < data.Length; i++)
             {
-                data[i] = new Vector4(i + 1, 0, 0, 0);
+                var value = i + 1;
+
+                if (useNegativeValues)
+                {
+                    value = -value;
+                }
+
+                data[i] = new Vector4(value, 0, 0, 0);
             }
 
             upload.Upload(data, inputBuffer);
-
-            reductionKernel.Dispatch(inputBuffer, reduceBuffer1);
-            reductionKernel.Dispatch(reduceBuffer1, reduceBuffer2);
-            reductionKernel.Dispatch(reduceBuffer2, reduceBuffer3);
-            reductionKernel.Dispatch(reduceBuffer3, resultBuffer);
-            
+            reduction.Reduce(inputBuffer, resultBuffer);
             readback.Request(resultBuffer, this);
         }
 
