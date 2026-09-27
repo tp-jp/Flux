@@ -20,6 +20,11 @@ namespace TpLab.Flux.Udon
             material.SetVector(name, value);
         }
 
+        public void SetVectorArray(string name, Vector4[] values)
+        {
+            material.SetVectorArray(name, values);
+        }
+
         public void SetBuffer(string name, FluxBuffer buffer)
         {
             material.SetTexture(name, buffer.Texture);
