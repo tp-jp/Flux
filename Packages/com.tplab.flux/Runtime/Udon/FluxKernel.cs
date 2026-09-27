@@ -1,6 +1,5 @@
 ﻿using UdonSharp;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VRC.SDKBase;
 
 namespace TpLab.Flux.Udon
