@@ -289,7 +289,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 32644451}
   reductionKernel: {fileID: 146556243}
-  factor: 4
+  reductionFactor: 4
   workspaceA: {fileID: 925739162}
   workspaceB: {fileID: 1295079546}
 --- !u!1 &35899831
@@ -1019,7 +1019,7 @@ MonoBehaviour:
   upload: {fileID: 289183224}
   reduction: {fileID: 32644452}
   readback: {fileID: 683233704}
-  useNegativeValues: 1
+  useNegativeValues: 0
 --- !u!1 &185884082
 GameObject:
   m_ObjectHideFlags: 0
