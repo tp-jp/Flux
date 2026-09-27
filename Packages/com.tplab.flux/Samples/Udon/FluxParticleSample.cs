@@ -1,13 +1,14 @@
 ﻿using TpLab.Flux.Udon;
 using UdonSharp;
 using UnityEngine;
+using VRC.Udon.Common.Interfaces;
 
 namespace TpLab.Flux.Samples.Udon
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class FluxParticleSample : UdonSharpBehaviour
     {
-        const int SimulationFrameCount = 100;
+        const float DeltaTime = 0.1f;
 
         [SerializeField]
         FluxBuffer positionA;
@@ -34,13 +35,15 @@ namespace TpLab.Flux.Samples.Udon
         FluxKernel updateVelocityKernel;
 
         [SerializeField]
-        FluxReadback readback;
+        Material renderMaterial;
 
+        [SerializeField]
+        bool simulate;
+        
         FluxBuffer _currentPosition;
         FluxBuffer _nextPosition;
         FluxBuffer _currentVelocity;
         FluxBuffer _nextVelocity;
-        int _frameCount;
 
         void Start()
         {
@@ -53,41 +56,23 @@ namespace TpLab.Flux.Samples.Udon
             _nextPosition = positionB;
             _currentVelocity = velocityA;
             _nextVelocity = velocityB;
+
+            ApplyRenderBuffer();
         }
 
         void Update()
         {
-            if (_frameCount >= SimulationFrameCount) return;
+            if (!simulate) return;
 
-            const float deltaTime = 0.1f;
-
-            updateVelocityKernel.SetFloat("_DeltaTime", deltaTime);
+            updateVelocityKernel.SetFloat("_DeltaTime", DeltaTime);
             updateVelocityKernel.Dispatch(_currentVelocity, _nextVelocity);
 
-            updatePositionKernel.SetFloat("_DeltaTime", deltaTime);
+            updatePositionKernel.SetFloat("_DeltaTime", DeltaTime);
             updatePositionKernel.SetBuffer("_Velocity", _nextVelocity);
             updatePositionKernel.Dispatch(_currentPosition, _nextPosition);
 
             SwapBuffers();
-
-            _frameCount++;
-
-            if (_frameCount == SimulationFrameCount)
-            {
-                readback.Request(_currentPosition, this);
-            }
-        }
-
-        public void _OnFluxReadbackComplete()
-        {
-            var data = readback.Data;
-
-            Debug.Log($"[Flux] Particle simulation completed: {_frameCount} frames");
-
-            for (var i = 0; i < readback.Count; i++)
-            {
-                Debug.Log($"Particle[{i}] Position = {data[i]}");
-            }
+            ApplyRenderBuffer();
         }
 
         void SwapBuffers()
@@ -99,6 +84,16 @@ namespace TpLab.Flux.Samples.Udon
             var velocity = _currentVelocity;
             _currentVelocity = _nextVelocity;
             _nextVelocity = velocity;
+        }
+
+        void ApplyRenderBuffer()
+        {
+            var texture = _currentPosition.Texture;
+
+            renderMaterial.SetTexture("_PositionTex", texture);
+            renderMaterial.SetFloat("_FluxCount", _currentPosition.Count);
+            renderMaterial.SetFloat("_FluxWidth", texture.width);
+            renderMaterial.SetFloat("_FluxHeight", texture.height);
         }
     }
 }
