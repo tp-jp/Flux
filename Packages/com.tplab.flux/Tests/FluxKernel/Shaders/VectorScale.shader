@@ -22,7 +22,7 @@ Shader "Flux/Tests/FluxKernel/VectorScale"
             #include "UnityCG.cginc"
             #include "Packages/com.tplab.flux/Runtime/Shaders/FluxCommon.hlsl"
 
-            sampler2D _MainTex;
+            sampler2D_float _MainTex;
             float _Scale;
 
             float4 frag(v2f_img i) : SV_Target

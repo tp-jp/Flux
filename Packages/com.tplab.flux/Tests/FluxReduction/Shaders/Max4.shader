@@ -21,7 +21,7 @@ Shader "Flux/Tests/Reduction/Max4"
             #include "UnityCG.cginc"
             #include "Packages/com.tplab.flux/Runtime/Shaders/FluxCommon.hlsl"
 
-            sampler2D _MainTex;
+            sampler2D_float _MainTex;
 
             float4 frag(v2f_img i) : SV_Target
             {
