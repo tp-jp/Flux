@@ -1,8 +1,13 @@
-﻿using UdonSharp;
+﻿using JetBrains.Annotations;
+using UdonSharp;
 using UnityEngine;
 
 namespace TpLab.Flux.Udon
 {
+    /// <summary>
+    /// FluxBufferのデータを複数Passで1要素までReductionします。
+    /// </summary>
+    [PublicAPI]
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class FluxReduction : UdonSharpBehaviour
     {
@@ -18,6 +23,12 @@ namespace TpLab.Flux.Udon
         [SerializeField]
         FluxBuffer workspaceB;
 
+        /// <summary>
+        /// Source Bufferを1要素までReductionし、結果をDestination Bufferへ書き込みます。
+        /// </summary>
+        /// <param name="source">ReductionするBuffer</param>
+        /// <param name="destination">結果を書き込むBuffer</param>
+        [PublicAPI]
         public void Reduce(FluxBuffer source, FluxBuffer destination)
         {
             var sourceCount = source.Count;

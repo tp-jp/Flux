@@ -1,8 +1,13 @@
-﻿using UdonSharp;
+﻿using JetBrains.Annotations;
+using UdonSharp;
 using UnityEngine;
 
 namespace TpLab.Flux.Udon
 {
+    /// <summary>
+    /// GPU上のデータをRenderTextureとして保持するBufferです。
+    /// </summary>
+    [PublicAPI]
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class FluxBuffer : UdonSharpBehaviour
     {
@@ -13,6 +18,10 @@ namespace TpLab.Flux.Udon
         RenderTexture _texture;
         int _count;
 
+        /// <summary>
+        /// Bufferのデータを保持するRenderTextureを取得します。
+        /// </summary>
+        [PublicAPI]
         public RenderTexture Texture
         {
             get
@@ -22,6 +31,10 @@ namespace TpLab.Flux.Udon
             }
         }
 
+        /// <summary>
+        /// Bufferの有効な要素数を取得します。
+        /// </summary>
+        [PublicAPI]
         public int Count
         {
             get
@@ -31,6 +44,10 @@ namespace TpLab.Flux.Udon
             }
         }
 
+        /// <summary>
+        /// Bufferが保持できる最大要素数を取得します。
+        /// </summary>
+        [PublicAPI]
         public int Capacity
         {
             get
@@ -40,6 +57,11 @@ namespace TpLab.Flux.Udon
             }
         }
 
+        /// <summary>
+        /// Bufferの有効な要素数を設定します。
+        /// </summary>
+        /// <param name="count">設定する要素数</param>
+        [PublicAPI]
         public void SetCount(int count)
         {
             EnsureInitialized();
