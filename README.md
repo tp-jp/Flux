@@ -26,13 +26,13 @@ Flux can be installed through the Unity Package Manager.
 
 Open **Package Manager > Add package from git URL...** and enter the Git repository URL:
 
-```text
+```text id="rcv75a"
 https://github.com/<OWNER>/<REPOSITORY>.git
 ```
 
 You can also install a specific version using a Git tag:
 
-```text
+```text id="c41yn7"
 https://github.com/<OWNER>/<REPOSITORY>.git#0.0.1
 ```
 
@@ -52,9 +52,7 @@ FluxFX is developed and distributed separately from Flux.
 
 ## Status
 
-**Version: 0.0.1 — Early Development**
-
-Flux is currently experimental and intended for early testing and evaluation.
+Flux is currently in early development and intended for testing and evaluation.
 
 Breaking changes may occur in future releases.
 
