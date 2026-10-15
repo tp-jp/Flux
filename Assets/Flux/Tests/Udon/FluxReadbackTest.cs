@@ -1,4 +1,4 @@
-﻿using TpLab.Flux.Udon;
+using TpLab.Flux.Udon;
 using UnityEngine;
 
 namespace TpLab.Flux.Tests.Udon
@@ -15,35 +15,91 @@ namespace TpLab.Flux.Tests.Udon
         [SerializeField]
         FluxReadback readback;
 
-        protected override string TestName => "FluxReadback / Logical Count";
+        int _phase;
+
+        protected override string TestName => "FluxReadback / Request Lifecycle";
 
         public override void Run()
         {
+            _phase = 0;
+            if (readback.TryRequest(null, this) || readback.TryRequest(buffer, null))
+            {
+                Fail("Null arguments must reject the request.");
+                return;
+            }
             buffer.SetCount(ReadbackCount);
-            readback.Request(buffer, this);
+            if (!readback.TryRequest(buffer, this))
+            {
+                Fail("The initial request was rejected.");
+                return;
+            }
+            if (!readback.IsRequesting || readback.Succeeded || readback.HasError || readback.Data != null)
+            {
+                Fail("Pending request state is invalid.");
+                return;
+            }
             buffer.SetCount(ChangedCount);
+            if (readback.TryRequest(buffer, this) || readback.Count != ReadbackCount)
+            {
+                Fail("A duplicate request must not replace the pending request.");
+            }
         }
 
         public void _OnFluxReadbackComplete()
         {
-            if (readback.Count != ReadbackCount)
+            if (readback.IsRequesting || readback.Succeeded == readback.HasError)
             {
-                Fail($"Expected count {ReadbackCount}, actual {readback.Count}");
+                Fail("Completion must publish either success or failure.");
                 return;
             }
-
-            if (buffer.Count != ChangedCount)
+            if (_phase == 1)
             {
-                Fail($"Expected buffer count {ChangedCount}, actual {buffer.Count}");
+                if (readback.Count != ChangedCount)
+                {
+                    Fail("Released buffer count was not preserved.");
+                    return;
+                }
+                if (buffer.Texture.IsCreated())
+                {
+                    Fail("Completion must not recreate the released buffer.");
+                    return;
+                }
+                if (readback.Succeeded ? readback.Data.Length != ExpectedCapacity : readback.Data != null)
+                {
+                    Fail("Completion data must match the request capacity and result.");
+                    return;
+                }
+                _phase = 2;
+                buffer.Texture.Create();
+                buffer.SetCount(ReadbackCount);
+                if (!readback.TryRequest(buffer, this))
+                {
+                    Fail("A request after buffer reinitialization was rejected.");
+                }
                 return;
             }
-
-            if (readback.Data.Length != ExpectedCapacity)
+            if (!readback.Succeeded || readback.Count != ReadbackCount || readback.Data.Length != ExpectedCapacity)
             {
-                Fail($"Expected data length {ExpectedCapacity}, actual {readback.Data.Length}");
+                Fail("Readback result, count or capacity is invalid.");
                 return;
             }
-
+            if (_phase == 0)
+            {
+                if (buffer.Count != ChangedCount)
+                {
+                    Fail("Buffer count must retain the change made after the request.");
+                    return;
+                }
+                _phase = 1;
+                readback.Request(buffer, this);
+                if (!readback.IsRequesting)
+                {
+                    Fail("A request from the completion event was rejected.");
+                    return;
+                }
+                buffer.Texture.Release();
+                return;
+            }
             Pass();
         }
     }

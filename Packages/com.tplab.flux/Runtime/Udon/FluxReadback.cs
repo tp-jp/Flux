@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Rendering;
@@ -14,72 +14,94 @@ namespace TpLab.Flux.Udon
     {
         const string CompleteEventName = "_OnFluxReadbackComplete";
 
-        FluxBuffer _buffer;
         UdonSharpBehaviour _receiver;
         Color[] _data;
         int _count;
         bool _isRequesting;
+        bool _succeeded;
+        bool _hasError;
 
         /// <summary>
-        /// 最後に読み戻したデータを取得します。
+        /// 完了した要求のデータ。未取得・要求中・失敗時はnull
         /// </summary>
         [PublicAPI]
-        public Color[] Data => _data;
+        public Color[] Data => _succeeded ? _data : null;
 
         /// <summary>
-        /// 最後に読み戻したBufferの有効な要素数を取得します。
+        /// 最後に受け付けた要求のBuffer有効要素数
         /// </summary>
         [PublicAPI]
         public int Count => _count;
 
         /// <summary>
-        /// GPU Readbackを実行中かどうかを取得します。
+        /// GPU Readbackの実行中かどうか
         /// </summary>
         [PublicAPI]
         public bool IsRequesting => _isRequesting;
 
         /// <summary>
-        /// FluxBufferの非同期GPU Readbackを開始します。
+        /// 最後に受け付けた要求が成功したかどうか。未取得・要求中はfalse
+        /// </summary>
+        [PublicAPI]
+        public bool Succeeded => _succeeded;
+
+        /// <summary>
+        /// 最後に受け付けた要求が失敗したかどうか。未取得・要求中はfalse
+        /// </summary>
+        [PublicAPI]
+        public bool HasError => _hasError;
+
+        /// <summary>
+        /// 非同期GPU Readbackを開始し、成功・失敗の両方で_OnFluxReadbackCompleteを通知します。
+        /// 実行中または引数がnullの場合は要求を受け付けません。
         /// </summary>
         /// <param name="buffer">読み戻すBuffer</param>
-        /// <param name="receiver">完了イベントを受け取るUdonSharpBehaviour</param>
+        /// <param name="receiver">完了イベントの通知先</param>
         [PublicAPI]
         public void Request(FluxBuffer buffer, UdonSharpBehaviour receiver)
         {
-            if (_isRequesting) return;
-
-            _buffer = buffer;
-            _receiver = receiver;
-            _count = buffer.Count;
-            _isRequesting = true;
-
-            VRCAsyncGPUReadback.Request(buffer.Texture, 0, this);
+            TryRequest(buffer, receiver);
         }
 
-        public override void OnAsyncGpuReadbackComplete(VRCAsyncGPUReadbackRequest request)
+        /// <summary>
+        /// 非同期GPU Readbackの要求を試みます。要求時のBuffer容量と有効要素数を保持します。
+        /// 受け付けた要求は、成功・失敗の両方で_OnFluxReadbackCompleteを通知します。
+        /// </summary>
+        /// <param name="buffer">読み戻すBuffer</param>
+        /// <param name="receiver">完了イベントの通知先</param>
+        /// <returns>要求を受け付けた場合はtrue。実行中または引数がnullの場合はfalse</returns>
+        [PublicAPI]
+        public bool TryRequest(FluxBuffer buffer, UdonSharpBehaviour receiver)
         {
-            _isRequesting = false;
+            if (_isRequesting || buffer == null || receiver == null) return false;
 
-            if (request.hasError)
-            {
-                Debug.LogError("[Flux] GPU readback failed.");
-                return;
-            }
-
-            var capacity = _buffer.Capacity;
-
+            var texture = buffer.Texture;
+            var capacity = texture.width * texture.height;
             if (_data == null || _data.Length != capacity)
             {
                 _data = new Color[capacity];
             }
+            _receiver = receiver;
+            _count = buffer.Count;
+            _succeeded = false;
+            _hasError = false;
+            _isRequesting = true;
 
-            if (!request.TryGetData(_data))
-            {
-                Debug.LogError("[Flux] Failed to copy GPU readback data.");
-                return;
-            }
+            VRCAsyncGPUReadback.Request(texture, 0, this);
+            return true;
+        }
 
-            _receiver.SendCustomEvent(CompleteEventName);
+        public override void OnAsyncGpuReadbackComplete(VRCAsyncGPUReadbackRequest request)
+        {
+            if (!_isRequesting) return;
+
+            _succeeded = !request.hasError && request.TryGetData(_data);
+            _hasError = !_succeeded;
+            _isRequesting = false;
+            var receiver = _receiver;
+            _receiver = null;
+            if (receiver == null) return;
+            receiver.SendCustomEvent(CompleteEventName);
         }
     }
 }
