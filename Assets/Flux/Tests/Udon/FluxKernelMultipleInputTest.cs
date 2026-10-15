@@ -1,4 +1,4 @@
-﻿using TpLab.Flux.Udon;
+using TpLab.Flux.Udon;
 using UdonSharp;
 using UnityEngine;
 
@@ -33,10 +33,13 @@ namespace TpLab.Flux.Tests.Udon
         [SerializeField]
         FluxReadback readback;
 
-        protected override string TestName => "FluxKernel / Multiple Input";
+        int _phase;
+
+        protected override string TestName => "FluxKernel / Multiple Input and Texture Binding";
 
         public override void Run()
         {
+            _phase = 0;
             initKernelA.SetFloat("_Scale", ScaleA);
             initKernelA.Dispatch(bufferA);
 
@@ -51,21 +54,42 @@ namespace TpLab.Flux.Tests.Udon
 
         public void _OnFluxReadbackComplete()
         {
+            if (!readback.Succeeded)
+            {
+                Fail("GPU readback failed.");
+                return;
+            }
             var data = readback.Data;
 
             for (var i = 0; i < TestCount; i++)
             {
-                var value = i * (ScaleA + ScaleB);
+                var value = _phase == 0 ? i * (ScaleA + ScaleB)
+                    : _phase == 1 ? i * ScaleA * 2 : i * ScaleA + 1;
                 var expected = new Vector4(value, value, value, 2f);
                 var actual = (Vector4)data[i];
 
                 if (!Approximately(actual, expected))
                 {
-                    Fail($"Index {i}: expected {expected}, actual {actual}");
+                    Fail($"Phase {_phase}, index {i}: expected {expected}, actual {actual}");
                     return;
                 }
             }
 
+            if (_phase < 2)
+            {
+                _phase++;
+                if (_phase == 1)
+                {
+                    addKernel.SetTexture("_InputB", bufferA.Texture);
+                }
+                else
+                {
+                    addKernel.SetTexture("_InputB", Texture2D.whiteTexture);
+                }
+                addKernel.Dispatch(bufferA, destinationBuffer);
+                readback.Request(destinationBuffer, this);
+                return;
+            }
             Pass();
         }
 

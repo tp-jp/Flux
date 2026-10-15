@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -61,6 +61,17 @@ namespace TpLab.Flux.Udon
         }
 
         /// <summary>
+        /// TextureをShaderのTextureパラメーターとして設定します。
+        /// </summary>
+        /// <param name="name">Shaderプロパティ名</param>
+        /// <param name="texture">設定するTexture</param>
+        [PublicAPI]
+        public void SetTexture(string name, Texture texture)
+        {
+            material.SetTexture(name, texture);
+        }
+
+        /// <summary>
         /// FluxBufferをShaderのTextureパラメーターとして設定します。
         /// </summary>
         /// <param name="name">Shaderプロパティ名</param>
@@ -68,7 +79,7 @@ namespace TpLab.Flux.Udon
         [PublicAPI]
         public void SetBuffer(string name, FluxBuffer buffer)
         {
-            material.SetTexture(name, buffer.Texture);
+            SetTexture(name, buffer.Texture);
         }
 
         /// <summary>

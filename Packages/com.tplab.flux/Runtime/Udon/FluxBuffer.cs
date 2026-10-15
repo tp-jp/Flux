@@ -75,6 +75,31 @@ namespace TpLab.Flux.Udon
             _count = count;
         }
 
+        /// <summary>
+        /// 所有するTextureを解放します。次回の利用時に初期設定で再確保します。
+        /// </summary>
+        [PublicAPI]
+        public void Release()
+        {
+            if (_texture == null) return;
+
+            _texture.Release();
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
+            if (Application.isPlaying)
+            {
+                Destroy(_texture);
+            }
+            else
+            {
+                DestroyImmediate(_texture);
+            }
+#else
+            Destroy(_texture);
+#endif
+            _texture = null;
+            _count = 0;
+        }
+
         void Start()
         {
             EnsureInitialized();
@@ -99,31 +124,6 @@ namespace TpLab.Flux.Udon
             _texture.Create();
 
             _count = initialCount;
-        }
-
-        /// <summary>
-        /// 所有するTextureを解放します。次回の利用時に初期設定で再確保します。
-        /// </summary>
-        [PublicAPI]
-        public void Release()
-        {
-            if (_texture == null) return;
-
-            _texture.Release();
-#if UNITY_EDITOR && !COMPILER_UDONSHARP
-            if (Application.isPlaying)
-            {
-                Destroy(_texture);
-            }
-            else
-            {
-                DestroyImmediate(_texture);
-            }
-#else
-            Destroy(_texture);
-#endif
-            _texture = null;
-            _count = 0;
         }
     }
 }
