@@ -1,7 +1,7 @@
 {
   "name": "com.tplab.flux",
   "displayName": "Flux",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "unity": "2022.3",
   "description": "General-purpose GPU computing framework for VRChat",
   "gitDependencies": {},

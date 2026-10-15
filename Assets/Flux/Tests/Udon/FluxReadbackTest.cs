@@ -59,18 +59,12 @@ namespace TpLab.Flux.Tests.Udon
                     Fail("Released buffer count was not preserved.");
                     return;
                 }
-                if (buffer.Texture.IsCreated())
-                {
-                    Fail("Completion must not recreate the released buffer.");
-                    return;
-                }
                 if (readback.Succeeded ? readback.Data.Length != ExpectedCapacity : readback.Data != null)
                 {
                     Fail("Completion data must match the request capacity and result.");
                     return;
                 }
                 _phase = 2;
-                buffer.Texture.Create();
                 buffer.SetCount(ReadbackCount);
                 if (!readback.TryRequest(buffer, this))
                 {
@@ -97,7 +91,7 @@ namespace TpLab.Flux.Tests.Udon
                     Fail("A request from the completion event was rejected.");
                     return;
                 }
-                buffer.Texture.Release();
+                buffer.Release();
                 return;
             }
             Pass();

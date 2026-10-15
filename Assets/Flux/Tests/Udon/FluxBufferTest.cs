@@ -1,4 +1,4 @@
-﻿using TpLab.Flux.Udon;
+using TpLab.Flux.Udon;
 using UdonSharp;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace TpLab.Flux.Tests.Udon
         [SerializeField]
         FluxBuffer buffer;
 
-        protected override string TestName => "FluxBuffer / Basic";
+        protected override string TestName => "FluxBuffer / Release and Reinitialize";
 
         public override void Run()
         {
@@ -56,6 +56,32 @@ namespace TpLab.Flux.Tests.Udon
             if (texture.width != ExpectedTextureSize || texture.height != ExpectedTextureSize)
             {
                 Fail($"Texture Size after SetCount: expected {ExpectedTextureSize}x{ExpectedTextureSize}, actual {texture.width}x{texture.height}");
+                return;
+            }
+
+            buffer.Release();
+            if (texture != null && texture.IsCreated())
+            {
+                Fail("Release must free the GPU texture.");
+                return;
+            }
+            buffer.Release();
+
+            var recreated = buffer.Texture;
+            if (recreated == null || !recreated.IsCreated() || recreated == texture)
+            {
+                Fail("Access after Release must create a new GPU texture.");
+                return;
+            }
+            if (buffer.Count != InitialCount || buffer.Capacity != ExpectedCapacity)
+            {
+                Fail("Reinitialization must restore the initial count and capacity.");
+                return;
+            }
+            buffer.SetCount(ChangedCount);
+            if (buffer.Count != ChangedCount)
+            {
+                Fail("SetCount must work after reinitialization.");
                 return;
             }
 
