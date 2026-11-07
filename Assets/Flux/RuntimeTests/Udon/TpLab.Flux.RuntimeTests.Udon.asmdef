@@ -1,6 +1,6 @@
 {
-    "name": "TpLab.Flux.Tests.Udon",
-    "rootNamespace": "TpLab.Flux.Tests.Udon",
+    "name": "TpLab.Flux.RuntimeTests.Udon",
+    "rootNamespace": "TpLab.Flux.RuntimeTests.Udon",
     "references": [
         "GUID:3c1bc1267eab5884ebe7f232c09ee0d9",
         "GUID:99835874ee819da44948776e0df4ff1d",

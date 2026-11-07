@@ -53,6 +53,15 @@ jobs:
           echo "unityPackage=${{ vars.PACKAGE_NAME }}-${{ steps.version.outputs.value }}.unitypackage" >> $GITHUB_ENV
           echo "version=${{ steps.version.outputs.value }}" >> $GITHUB_ENV
 
+      # Include runtime tests in both release formats, preserving Unity GUIDs.
+      - name: Stage Runtime Tests
+        run: |
+          test ! -e "${{ env.packagePath }}/Samples~/RuntimeTests"
+          test ! -e "${{ env.packagePath }}/Samples~/RuntimeTests.meta"
+          mkdir -p "${{ env.packagePath }}/Samples~"
+          cp -a Assets/Flux/RuntimeTests "${{ env.packagePath }}/Samples~/RuntimeTests"
+          cp Assets/Flux/RuntimeTests.meta "${{ env.packagePath }}/Samples~/RuntimeTests.meta"
+
       # Zip the Package for release
       - name: Create Package Zip
         working-directory: "${{ env.packagePath }}"

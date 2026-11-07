@@ -1,7 +1,7 @@
 ﻿using TpLab.Flux.Udon;
 using UnityEngine;
 
-namespace TpLab.Flux.Tests.Udon
+namespace TpLab.Flux.RuntimeTests.Udon
 {
     public class FluxParticleSimulationTest : FluxRuntimeTestBase
     {

@@ -2,7 +2,7 @@
 using UdonSharp;
 using UnityEngine;
 
-namespace TpLab.Flux.Tests.Udon
+namespace TpLab.Flux.RuntimeTests.Udon
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class FluxRuntimeTestRunner : UdonSharpBehaviour

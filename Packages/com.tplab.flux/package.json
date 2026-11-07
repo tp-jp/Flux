@@ -1,7 +1,7 @@
 {
   "name": "com.tplab.flux",
   "displayName": "Flux",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "unity": "2022.3",
   "description": "General-purpose GPU computing framework for VRChat",
   "gitDependencies": {},
@@ -17,9 +17,9 @@
   "legacyFiles": {},
   "samples": [
     {
-      "displayName": "Sample",
-      "description": "A sample demonstrating how to use this package.",
-      "path": "Samples~/Sample"
+      "displayName": "Runtime Tests",
+      "description": "Runtime tests for Flux buffers, kernels, uploads, readbacks, reductions, and particle simulation.",
+      "path": "Samples~/RuntimeTests"
     }
   ]
 }

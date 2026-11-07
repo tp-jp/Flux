@@ -1,6 +1,6 @@
 using UdonSharp;
 
-namespace TpLab.Flux.Tests.Udon
+namespace TpLab.Flux.RuntimeTests.Udon
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public abstract class FluxRuntimeTestBase : UdonSharpBehaviour

@@ -1,12 +1,12 @@
 ﻿using TpLab.Flux.Udon;
 using UnityEngine;
 
-namespace TpLab.Flux.Tests.Udon
+namespace TpLab.Flux.RuntimeTests.Udon
 {
-    public class FluxReductionNegativeMax4Test : FluxRuntimeTestBase
+    public class FluxReductionMax4Test : FluxRuntimeTestBase
     {
         const int TestCount = 250;
-        const float ExpectedResult = -1f;
+        const float ExpectedResult = 250f;
         const float Tolerance = 0.01f;
 
         [SerializeField]
@@ -24,7 +24,7 @@ namespace TpLab.Flux.Tests.Udon
         [SerializeField]
         FluxReadback readback;
 
-        protected override string TestName => "FluxReduction / Negative Max4";
+        protected override string TestName => "FluxReduction / Max4";
 
         public override void Run()
         {
@@ -32,7 +32,7 @@ namespace TpLab.Flux.Tests.Udon
 
             for (var i = 0; i < data.Length; i++)
             {
-                data[i] = new Vector4(-(i + 1), 0, 0, 0);
+                data[i] = new Vector4(i + 1, 0, 0, 0);
             }
 
             upload.Upload(data, inputBuffer);

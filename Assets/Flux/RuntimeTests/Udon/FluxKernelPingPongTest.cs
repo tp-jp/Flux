@@ -2,42 +2,44 @@
 using UdonSharp;
 using UnityEngine;
 
-namespace TpLab.Flux.Tests.Udon
+namespace TpLab.Flux.RuntimeTests.Udon
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class FluxUploadTest : FluxRuntimeTestBase
+    public class FluxKernelPingPongTest : FluxRuntimeTestBase
     {
         const int TestCount = 16;
+        const float Scale = 2f;
         const float Tolerance = 0.01f;
 
         [SerializeField]
-        FluxBuffer buffer;
+        FluxBuffer bufferA;
 
         [SerializeField]
-        FluxUpload upload;
+        FluxBuffer bufferB;
+
+        [SerializeField]
+        FluxKernel initKernel;
+
+        [SerializeField]
+        FluxKernel vectorScaleKernel;
 
         [SerializeField]
         FluxReadback readback;
 
-        Vector4[] _expected;
-
-        protected override string TestName => "FluxUpload / Basic";
+        protected override string TestName => "FluxKernel / Ping Pong";
 
         public override void Run()
         {
-            _expected = new Vector4[TestCount];
+            initKernel.SetFloat("_Scale", 1f);
+            initKernel.Dispatch(bufferA);
 
-            for (var i = 0; i < TestCount; i++)
-            {
-                _expected[i] = new Vector4(
-                    i,
-                    i * 2f,
-                    i * 3f,
-                    i * 4f);
-            }
+            vectorScaleKernel.SetFloat("_Scale", Scale);
 
-            upload.Upload(_expected, buffer);
-            readback.Request(buffer, this);
+            vectorScaleKernel.Dispatch(bufferA, bufferB);
+            vectorScaleKernel.Dispatch(bufferB, bufferA);
+            vectorScaleKernel.Dispatch(bufferA, bufferB);
+
+            readback.Request(bufferB, this);
         }
 
         public void _OnFluxReadbackComplete()
@@ -46,7 +48,8 @@ namespace TpLab.Flux.Tests.Udon
 
             for (var i = 0; i < TestCount; i++)
             {
-                var expected = _expected[i];
+                var value = i * Scale * Scale * Scale;
+                var expected = new Vector4(value, value, value, Scale * Scale * Scale);
                 var actual = (Vector4)data[i];
 
                 if (!Approximately(actual, expected))
