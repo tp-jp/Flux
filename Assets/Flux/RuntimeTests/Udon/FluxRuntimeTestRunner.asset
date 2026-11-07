@@ -20,7 +20,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 1
   hasInteractEvent: 0
-  scriptID: -2232869871601578814
+  scriptID: -7439266000131633874
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -61,7 +61,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: TpLab.Flux.Tests.Udon.FluxRuntimeTestBase[], TpLab.Flux.Tests.Udon
+      Data: TpLab.Flux.RuntimeTests.Udon.FluxRuntimeTestBase[], TpLab.Flux.RuntimeTests.Udon
     - Name: 
       Entry: 8
       Data: 
