@@ -27,13 +27,13 @@ namespace TpLab.Flux.Udon
         {
             if (data.Length != destination.Count)
             {
-                Debug.LogError($"[Flux] Upload count must match the destination count ({destination.Count}).");
+                Logger.LogError($"Upload count must match the destination count ({destination.Count}).");
                 return;
             }
 
             if (data.Length > MaxUploadCount)
             {
-                Debug.LogError($"[Flux] Upload count exceeds the maximum of {MaxUploadCount}.");
+                Logger.LogError($"Upload count exceeds the maximum of {MaxUploadCount}.");
                 return;
             }
 

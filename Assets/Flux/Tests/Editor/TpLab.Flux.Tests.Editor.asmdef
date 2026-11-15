@@ -1,0 +1,10 @@
+{
+    "name": "TpLab.Flux.Tests.Editor",
+    "rootNamespace": "TpLab.Flux.Tests.Editor",
+    "references": ["TpLab.Flux.Udon", "UdonSharp.Runtime", "UdonSharp.Editor", "VRC.Udon", "UnityEngine.TestRunner", "UnityEditor.TestRunner"],
+    "includePlatforms": ["Editor"],
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll", "VRCSDKBase.dll", "VRC.Udon.Common.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"]
+}

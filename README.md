@@ -17,8 +17,11 @@ It provides a low-level foundation for GPU-based data processing and simulations
 
 ## Features
 
+Buffer and Kernel API contracts: [日本語](Packages/com.tplab.flux/Documentation~/buffer-kernel.ja.md) / [English](Packages/com.tplab.flux/Documentation~/buffer-kernel.md).
+
 - GPU-based data processing
-- ComputeBuffer management
+- ARGBFloat RenderTexture buffers with automatic or explicit dimensions
+- Point / Bilinear filtering and explicit Shader pass dispatch
 - Dispatch utilities
 - Ping-pong buffer processing
 - Reduction operations

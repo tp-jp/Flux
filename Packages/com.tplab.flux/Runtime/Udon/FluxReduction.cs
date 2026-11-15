@@ -35,37 +35,37 @@ namespace TpLab.Flux.Udon
 
             if (sourceCount <= 0)
             {
-                Debug.LogError("[Flux] Reduction source must contain at least one element.");
+                Logger.LogError("Reduction source must contain at least one element.");
                 return;
             }
 
             if (reductionFactor <= 1)
             {
-                Debug.LogError("[Flux] Reduction factor must be greater than 1.");
+                Logger.LogError("Reduction factor must be greater than 1.");
                 return;
             }
 
             if (source == destination)
             {
-                Debug.LogError("[Flux] Reduction source and destination must be different buffers.");
+                Logger.LogError("Reduction source and destination must be different buffers.");
                 return;
             }
 
             if (workspaceA == workspaceB)
             {
-                Debug.LogError("[Flux] Reduction workspaces must be different buffers.");
+                Logger.LogError("Reduction workspaces must be different buffers.");
                 return;
             }
 
             if (source == workspaceA || source == workspaceB || destination == workspaceA || destination == workspaceB)
             {
-                Debug.LogError("[Flux] Reduction source and destination must not use the reduction workspaces.");
+                Logger.LogError("Reduction source and destination must not use the reduction workspaces.");
                 return;
             }
 
             if (destination.Capacity < 1)
             {
-                Debug.LogError("[Flux] Reduction destination must have a capacity of at least 1.");
+                Logger.LogError("Reduction destination must have a capacity of at least 1.");
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace TpLab.Flux.Udon
 
             if (requiredWorkspaceCount > workspaceA.Capacity || requiredWorkspaceCount > workspaceB.Capacity)
             {
-                Debug.LogError($"[Flux] Reduction workspace capacity is too small. Required: {requiredWorkspaceCount}.");
+                Logger.LogError($"Reduction workspace capacity is too small. Required: {requiredWorkspaceCount}.");
                 return;
             }
 

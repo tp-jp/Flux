@@ -69,13 +69,14 @@ namespace TpLab.Flux.Udon
         /// </summary>
         /// <param name="buffer">読み戻すBuffer</param>
         /// <param name="receiver">完了イベントの通知先</param>
-        /// <returns>要求を受け付けた場合はtrue。実行中または引数がnullの場合はfalse</returns>
+        /// <returns>要求を受け付けた場合はtrue。実行中、引数がnull、またはBuffer確保失敗時はfalse</returns>
         [PublicAPI]
         public bool TryRequest(FluxBuffer buffer, UdonSharpBehaviour receiver)
         {
             if (_isRequesting || buffer == null || receiver == null) return false;
 
             var texture = buffer.Texture;
+            if (texture == null) return false;
             var capacity = texture.width * texture.height;
             if (_data == null || _data.Length != capacity)
             {

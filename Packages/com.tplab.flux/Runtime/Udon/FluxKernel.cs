@@ -89,6 +89,7 @@ namespace TpLab.Flux.Udon
         [PublicAPI]
         public void Dispatch(FluxBuffer destination)
         {
+            if (!ValidateDestination(destination)) return;
             PrepareDestination(destination);
 
             VRCGraphics.Blit(null, destination.Texture, material);
@@ -102,10 +103,88 @@ namespace TpLab.Flux.Udon
         [PublicAPI]
         public void Dispatch(FluxBuffer source, FluxBuffer destination)
         {
+            if (!ValidateDestination(destination) || !ValidateSource(source, destination)) return;
             PrepareDestination(destination);
             PrepareSource(source);
 
             VRCGraphics.Blit(source.Texture, destination.Texture, material);
+        }
+
+        /// <summary>
+        /// Sourceを使用せず、指定Passだけを実行します。出力のクリアやCountの変更は行いません。
+        /// 追加のTexture入力と出力の重複は検証しません。
+        /// </summary>
+        /// <param name="destination">処理結果を書き込むBuffer</param>
+        /// <param name="pass">0以上、MaterialのPass数未満のPass番号</param>
+        [PublicAPI]
+        public void Dispatch(FluxBuffer destination, int pass)
+        {
+            if (!ValidatePass(pass) || !ValidateDestination(destination)) return;
+            PrepareDestination(destination);
+            VRCGraphics.Blit(null, destination.Texture, material, pass);
+        }
+
+        /// <summary>
+        /// Source Bufferを入力として、指定Passだけを実行します。出力のクリアやCountの変更は行いません。
+        /// 明示したSourceと出力の同一Textureを拒否します。追加のTexture入力は検証対象外です。
+        /// </summary>
+        /// <param name="source">入力として使用するBuffer</param>
+        /// <param name="destination">処理結果を書き込むBuffer</param>
+        /// <param name="pass">0以上、MaterialのPass数未満のPass番号</param>
+        [PublicAPI]
+        public void Dispatch(FluxBuffer source, FluxBuffer destination, int pass)
+        {
+            if (!ValidatePass(pass) || !ValidateDestination(destination) || !ValidateSource(source, destination)) return;
+            PrepareDestination(destination);
+            PrepareSource(source);
+            VRCGraphics.Blit(source.Texture, destination.Texture, material, pass);
+        }
+
+        bool ValidatePass(int pass)
+        {
+            if (material == null)
+            {
+                Logger.LogError("Kernel Material is not prepared. Run FluxBuildPass before dispatch.");
+                return false;
+            }
+            if (pass < 0 || pass >= material.passCount)
+            {
+                Logger.LogError($"Pass must be between 0 and {material.passCount - 1}.");
+                return false;
+            }
+            return true;
+        }
+
+        bool ValidateDestination(FluxBuffer destination)
+        {
+            if (material == null)
+            {
+                Logger.LogError("Kernel Material is not prepared. Run FluxBuildPass before dispatch.");
+                return false;
+            }
+            if (destination == null)
+            {
+                Logger.LogError("Destination Buffer is required.");
+                return false;
+            }
+            return destination.Texture != null;
+        }
+
+        bool ValidateSource(FluxBuffer source, FluxBuffer destination)
+        {
+            if (source == null)
+            {
+                Logger.LogError("Source Buffer is required.");
+                return false;
+            }
+            var texture = source.Texture;
+            if (texture == null) return false;
+            if (texture == destination.Texture)
+            {
+                Logger.LogError("Source and destination must use different Textures.");
+                return false;
+            }
+            return true;
         }
 
         void PrepareSource(FluxBuffer source)
