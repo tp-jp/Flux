@@ -50,6 +50,8 @@ namespace TpLab.Flux.RuntimeTests.Editor
             serialized.FindProperty("destination").objectReferenceValue = destination;
             serialized.FindProperty("kernel").objectReferenceValue = kernel;
             serialized.FindProperty("readback").objectReferenceValue = readback;
+            serialized.FindProperty("propertiesSource").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Material>(
+                AssetDatabase.GUIDToAssetPath("991d679e6890a3d44be793c779b6f845"));
             serialized.ApplyModifiedPropertiesWithoutUndo();
             var runner = Object.FindObjectOfType<FluxRuntimeTestRunner>();
             test.gameObject.name = nameof(FluxBufferKernelContractTest);

@@ -293,6 +293,107 @@ namespace TpLab.Flux.Tests.Editor
             AssertColor(Read(destination.Texture)[0], new Color(expected, expected, 0, -expected), 0);
         }
 
+        [TestCase("Flux/Tests/FluxKernel/BufferContracts")]
+        [TestCase("Flux/Tests/FluxKernel/VectorScale")]
+        public void MaterialCopyPreservesKernelAndCopiesRuntimeProperties(string sourceShader)
+        {
+            var kernel = Kernel();
+            var target = Get<Material>(kernel, "material");
+            var shader = target.shader;
+            var source = new Material(Shader.Find(sourceShader));
+            _materials.Add(source);
+            source.SetFloat("_Start", 3);
+            source.SetColor("_Value", new Color(1, -2, 3, -4));
+            source.SetTexture("_MainTex", Texture2D.whiteTexture);
+            source.SetTextureScale("_MainTex", new Vector2(2, 3));
+            source.SetTextureOffset("_MainTex", new Vector2(0.25f, -0.5f));
+            var vectors = new[] { new Vector4(1, -2, 3, -4), new Vector4(-5, 6, -7, 8) };
+            source.SetVectorArray("_RuntimeVectors", vectors);
+            source.EnableKeyword("FLUX_COPY_TEST");
+            source.renderQueue = 2456;
+            source.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+            target.EnableKeyword("FLUX_OLD_TEST");
+
+            kernel.CopyPropertiesFromMaterial(source);
+
+            Assert.That(Get<Material>(kernel, "material"), Is.SameAs(target));
+            Assert.That(target.shader, Is.SameAs(shader));
+            Assert.That(kernel.Shader, Is.SameAs(shader));
+            Assert.That(target.passCount, Is.EqualTo(4));
+            Assert.That(target.GetFloat("_Start"), Is.EqualTo(3));
+            Assert.That(target.GetVector("_Value"), Is.EqualTo(new Vector4(1, -2, 3, -4)));
+            Assert.That(target.GetTexture("_MainTex"), Is.SameAs(Texture2D.whiteTexture));
+            Assert.That(target.GetTextureScale("_MainTex"), Is.EqualTo(new Vector2(2, 3)));
+            Assert.That(target.GetTextureOffset("_MainTex"), Is.EqualTo(new Vector2(0.25f, -0.5f)));
+            CollectionAssert.AreEqual(vectors, target.GetVectorArray("_RuntimeVectors"));
+            CollectionAssert.AreEquivalent(source.shaderKeywords, target.shaderKeywords);
+            Assert.That(target.renderQueue, Is.EqualTo(2456));
+            Assert.That(target.globalIlluminationFlags, Is.EqualTo(source.globalIlluminationFlags));
+
+            source.SetFloat("_Start", 9);
+            Assert.That(target.GetFloat("_Start"), Is.EqualTo(3), "Copy must not create a live link");
+            kernel.SetFloat("_Start", 5);
+            Assert.That(source.GetFloat("_Start"), Is.EqualTo(9), "Overrides must not mutate the source");
+            kernel.CopyPropertiesFromMaterial(source);
+            Assert.That(target.GetFloat("_Start"), Is.EqualTo(9));
+        }
+
+        [Test]
+        public void MaterialCopyDoesNotWriteAndDispatchRestoresBufferMetadata()
+        {
+            var kernel = Kernel();
+            var input = Buffer(16, 8, 2);
+            var output = Buffer(7, 4, 4);
+            kernel.Dispatch(input, 1);
+            kernel.Dispatch(output, 1);
+            var before = Read(output.Texture);
+            var source = new Material(Shader.Find("Flux/Tests/FluxKernel/VectorScale"));
+            _materials.Add(source);
+            source.SetTexture("_MainTex", input.Texture);
+            source.SetFloat("_FluxSourceWidth", 8);
+            source.SetFloat("_FluxSourceHeight", 2);
+            source.SetFloat("_FluxDestinationWidth", 999);
+            source.SetFloat("_FluxDestinationHeight", 999);
+            source.SetFloat("_FluxDestinationCount", 999);
+            kernel.CopyPropertiesFromMaterial(source);
+            CollectionAssert.AreEqual(before, Read(output.Texture), "Copy must not clear or dispatch");
+            Assert.That(output.Count, Is.EqualTo(7));
+            kernel.Dispatch(output, 2);
+            CollectionAssert.AreEqual(Read(input.Texture), Read(output.Texture), "Copied Texture must be used by the retained COPY pass");
+            source.SetFloat("_FluxSourceWidth", 999);
+            source.SetFloat("_FluxSourceHeight", 999);
+            source.SetFloat("_FluxSourceCount", 999);
+            kernel.CopyPropertiesFromMaterial(source);
+            kernel.Dispatch(input, output, 2);
+            CollectionAssert.AreEqual(Read(input.Texture), Read(output.Texture));
+            var target = Get<Material>(kernel, "material");
+            Assert.That(target.GetFloat("_FluxSourceCount"), Is.EqualTo(16));
+            Assert.That(target.GetFloat("_FluxSourceWidth"), Is.EqualTo(8));
+            Assert.That(target.GetFloat("_FluxSourceHeight"), Is.EqualTo(2));
+            Assert.That(target.GetFloat("_FluxDestinationCount"), Is.EqualTo(7));
+            Assert.That(target.GetFloat("_FluxDestinationWidth"), Is.EqualTo(4));
+            Assert.That(target.GetFloat("_FluxDestinationHeight"), Is.EqualTo(4));
+            Assert.That(source.GetFloat("_FluxSourceWidth"), Is.EqualTo(999));
+            Assert.That(source.GetFloat("_FluxDestinationCount"), Is.EqualTo(999));
+        }
+
+        [Test]
+        public void InvalidMaterialCopyPreservesExistingStateAndDoesNotConstructMaterial()
+        {
+            var kernel = Kernel();
+            var target = Get<Material>(kernel, "material");
+            kernel.SetFloat("_Start", 7);
+            ExpectError("Source Material is required.");
+            kernel.CopyPropertiesFromMaterial(null);
+            Assert.That(Get<Material>(kernel, "material"), Is.SameAs(target));
+            Assert.That(target.GetFloat("_Start"), Is.EqualTo(7));
+            var unprepared = Component<FluxKernel>();
+            ExpectError("Kernel Material is not prepared. Run FluxBuildPass before copying properties.");
+            unprepared.CopyPropertiesFromMaterial(target);
+            Assert.That(Get<Material>(unprepared, "material"), Is.Null);
+            Assert.That(target.GetFloat("_Start"), Is.EqualTo(7));
+        }
+
         T Component<T>() where T : UdonSharpBehaviour
         {
             var go = new GameObject(typeof(T).Name);

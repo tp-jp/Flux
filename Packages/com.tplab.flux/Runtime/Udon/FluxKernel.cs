@@ -28,6 +28,32 @@ namespace TpLab.Flux.Udon
 #endif
 
         /// <summary>
+        /// 準備済みのKernel Materialへ、別のMaterialの設定を一括コピーします。
+        /// UnityのCopyPropertiesFromMaterialに従い、実行時設定を含むプロパティ値・Texture参照・
+        /// Shaderキーワード・RenderQueue・GIフラグをコピーします。ShaderとMaterialインスタンスは変更しません。
+        /// コピー元は変更せず、以後の設定変更は自動同期しません。Textureの内容は複製しません。
+        /// Kernel固有の入力やパラメーターはコピー後に設定してください。
+        /// Dispatchが設定する入出力のCount・幅・高さは、Dispatch時に実際のBufferの値で上書きします。
+        /// Textureの入出力重複は検証しません。Bufferの確保・クリアやDispatchは行いません。
+        /// </summary>
+        /// <param name="source">コピー元のMaterial。異なるShaderも指定可能。nullまたはKernel Material未準備の場合はエラーを記録して変更せず終了</param>
+        [PublicAPI]
+        public void CopyPropertiesFromMaterial(Material source)
+        {
+            if (source == null)
+            {
+                Logger.LogError("Source Material is required.");
+                return;
+            }
+            if (material == null)
+            {
+                Logger.LogError("Kernel Material is not prepared. Run FluxBuildPass before copying properties.");
+                return;
+            }
+            material.CopyPropertiesFromMaterial(source);
+        }
+
+        /// <summary>
         /// Shaderのfloatパラメーターを設定します。
         /// </summary>
         /// <param name="name">Shaderプロパティ名</param>
