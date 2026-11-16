@@ -22,6 +22,10 @@ namespace TpLab.Flux.RuntimeTests.Udon
         [SerializeField]
         FluxReadback readback;
 
+        [SerializeField]
+        [Tooltip("異常系のUdon検証を実行します。意図したエラーログが3件出るため、ConsoleのError Pauseを解除して実行してください。")]
+        bool runInvalidInputChecks;
+
         int _stage;
 
         protected override string TestName => "FluxBuffer / Explicit dimensions, Pass selection and accumulation";
@@ -46,10 +50,13 @@ namespace TpLab.Flux.RuntimeTests.Udon
             }
             kernel.Dispatch(source, 1);
             kernel.Dispatch(source, destination, 2);
-            // Expected errors: rejected operations must preserve the copy for the GPU comparison.
-            kernel.Dispatch(destination, -1);
-            kernel.Dispatch(source, destination, 4);
-            kernel.Dispatch(destination, destination, 2);
+            // Error-emitting cases are opt-in; Editor tests verify their expected logs separately.
+            if (runInvalidInputChecks)
+            {
+                kernel.Dispatch(destination, -1);
+                kernel.Dispatch(source, destination, 4);
+                kernel.Dispatch(destination, destination, 2);
+            }
             if (destination.Count != 123)
             {
                 Fail("Dispatch changed output Count.");

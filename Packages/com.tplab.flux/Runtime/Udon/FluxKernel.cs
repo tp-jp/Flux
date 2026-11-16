@@ -140,6 +140,28 @@ namespace TpLab.Flux.Udon
             VRCGraphics.Blit(source.Texture, destination.Texture, material, pass);
         }
 
+        /// <summary>
+        /// 指定PassへのDispatch準備を検証します。Textureは必要に応じて確保しますが、描画はしません。
+        /// 追加Texture入力のサイズ・入出力重複は検証対象外です。
+        /// Shaderの対応状況はEditorのみで検証します。isSupportedはUdonに公開されていません。
+        /// </summary>
+        /// <param name="destination">出力Buffer</param>
+        /// <param name="pass">検証するPass番号</param>
+        /// <returns>実行環境で検証可能なMaterial・Pass・出力の条件を満たす場合はtrue</returns>
+        [PublicAPI]
+        public bool ValidateDispatch(FluxBuffer destination, int pass)
+        {
+            if (!ValidatePass(pass)) return false;
+#if !COMPILER_UDONSHARP
+            if (!material.shader.isSupported)
+            {
+                Logger.LogError("Kernel Shader is not supported on this graphics device.");
+                return false;
+            }
+#endif
+            return ValidateDestination(destination);
+        }
+
         bool ValidatePass(int pass)
         {
             if (material == null)
